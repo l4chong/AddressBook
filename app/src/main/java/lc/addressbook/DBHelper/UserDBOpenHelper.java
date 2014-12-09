@@ -12,10 +12,10 @@ public class UserDBOpenHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_USERS = "users";
-    public static final String COLUMN_ID = "userId";
+//    public static final String COLUMN_ID = "userId";
     public static final String COLUMN_USERNAME = "userName";
     public static final String COLUMN_LOCATION_CITY = "city";
-    public static final String COLUMN_LOCATION_STATE_ = "state";
+    public static final String COLUMN_LOCATION_STATE = "state";
     public static final String COLUMN_LOCATION_STREET = "street";
     public static final String COLUMN_LOCATION_ZIP = "zip";
     public static final String COLUMN_NAME_TITLE = "title";
@@ -33,10 +33,10 @@ public class UserDBOpenHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_CREATE =
                     "CREATE TABLE " + TABLE_USERS + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_USERNAME + " TEXT, " +
                     COLUMN_LOCATION_CITY + " TEXT, " +
-                    COLUMN_LOCATION_STATE_ + " TEXT, " +
+                    COLUMN_LOCATION_STATE + " TEXT, " +
                     COLUMN_LOCATION_STREET + " TEXT, " +
                     COLUMN_LOCATION_ZIP + " TEXT, " +
                     COLUMN_NAME_TITLE + " TEXT, " +

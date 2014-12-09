@@ -1,13 +1,16 @@
 package lc.addressbook;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.ListFragment;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.List;
 
+import lc.addressbook.Adapter.ListAdapter;
+import lc.addressbook.DBHelper.UserDataSource;
+import lc.addressbook.Models.Result;
 import lc.addressbook.dummy.DummyContent;
 
 /**
@@ -20,6 +23,8 @@ import lc.addressbook.dummy.DummyContent;
  * interface.
  */
 public class ItemListFragment extends ListFragment {
+     UserDataSource dataSource;
+     List<Result> results;
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -70,13 +75,14 @@ public class ItemListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dataSource = new UserDataSource(getActivity());
+        dataSource.open();
+        results = dataSource.getSortedUsers();
+//
+//        // TODO: replace with a real list adapter.
 
-        // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                DummyContent.ITEMS));
+//        ListAdapter adapter = new lc.addressbook.Adapter.ListAdapter(getActivity(),R.layout.row,results);
+//        setListAdapter(adapter);
     }
 
     @Override
@@ -88,7 +94,12 @@ public class ItemListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
+        ListAdapter adapter = new lc.addressbook.Adapter.ListAdapter(getActivity(),R.layout.row,results);
+        setListAdapter(adapter);
     }
+
+
 
     @Override
     public void onAttach(Activity activity) {

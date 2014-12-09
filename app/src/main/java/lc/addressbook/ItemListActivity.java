@@ -1,7 +1,12 @@
 package lc.addressbook;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -35,8 +40,21 @@ public class ItemListActivity extends Activity
         dataSource = new UserDataSource(this);
         dataSource.open();
         if(dataSource.isUserTableEmpty()) {
+            if (!isOnline()) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Internet Connection Error")
+                        .setMessage("Verify you are connected to the internet and try again")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+
            Log.i("tag", "it is empty, generate contacts");
-//            generateContacts();
+           generateContacts();
         }
 
         if (findViewById(R.id.item_detail_container) != null) {
@@ -100,5 +118,17 @@ public class ItemListActivity extends Activity
                 Log.i("tag", "fail");
             }
         });
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dataSource.close();
     }
 }
