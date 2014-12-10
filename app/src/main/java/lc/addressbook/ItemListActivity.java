@@ -17,6 +17,7 @@ import lc.addressbook.APIHelper.API;
 import lc.addressbook.DBHelper.UserDataSource;
 import lc.addressbook.Models.Result;
 import lc.addressbook.Models.Results;
+import lc.addressbook.Models.User;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -55,7 +56,9 @@ public class ItemListActivity extends Activity
 
            Log.i("tag", "it is empty, generate contacts");
            generateContacts();
+           dataSource.populateDB(mResults);
         }
+
 
         if (findViewById(R.id.item_detail_container) != null) {
             // The detail container view will be present only in the
@@ -79,13 +82,14 @@ public class ItemListActivity extends Activity
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(User user) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ItemDetailFragment.ARG_ITEM_ID, id);
+            arguments.putString(ItemDetailFragment.ARG_ITEM_ID, user);
+            arguments.put
             ItemDetailFragment fragment = new ItemDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
@@ -96,7 +100,7 @@ public class ItemListActivity extends Activity
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, ItemDetailActivity.class);
-            detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, user);
             startActivity(detailIntent);
         }
     }
@@ -110,7 +114,7 @@ public class ItemListActivity extends Activity
         api.getContacts(20,new Callback<Results>() {
             @Override
             public void success(Results results, Response response) {
-                dataSource.populateDB(results);
+                dataSource.populateDB(results.getResults());
             }
 
             @Override

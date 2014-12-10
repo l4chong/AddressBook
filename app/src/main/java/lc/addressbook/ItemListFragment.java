@@ -11,7 +11,7 @@ import java.util.List;
 import lc.addressbook.Adapter.ListAdapter;
 import lc.addressbook.DBHelper.UserDataSource;
 import lc.addressbook.Models.Result;
-import lc.addressbook.dummy.DummyContent;
+import lc.addressbook.Models.User;
 
 /**
  * A list fragment representing a list of Items. This fragment
@@ -52,7 +52,7 @@ public class ItemListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        public void onItemSelected(User user);
     }
 
     /**
@@ -61,7 +61,7 @@ public class ItemListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onItemSelected(User user) {
         }
     };
 
@@ -78,11 +78,9 @@ public class ItemListFragment extends ListFragment {
         dataSource = new UserDataSource(getActivity());
         dataSource.open();
         results = dataSource.getSortedUsers();
-//
-//        // TODO: replace with a real list adapter.
-
-//        ListAdapter adapter = new lc.addressbook.Adapter.ListAdapter(getActivity(),R.layout.row,results);
-//        setListAdapter(adapter);
+        dataSource.close();
+        ListAdapter adapter = new lc.addressbook.Adapter.ListAdapter(getActivity(),R.layout.row,results);
+        setListAdapter(adapter);
     }
 
     @Override
@@ -94,9 +92,6 @@ public class ItemListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
-
-        ListAdapter adapter = new lc.addressbook.Adapter.ListAdapter(getActivity(),R.layout.row,results);
-        setListAdapter(adapter);
     }
 
 
@@ -127,7 +122,7 @@ public class ItemListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(results.get(position).getUser());
     }
 
     @Override

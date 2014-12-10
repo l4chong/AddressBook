@@ -67,7 +67,7 @@ public class ListAdapter  extends ArrayAdapter<Result> {
         // assign values if the object is not null
         if(result != null) {
             // get the TextView from the ViewHolder and then set the text (item name) and tag (item ID) values
-            Picasso.with(getContext()).load(result.getUser().getPicture().getMedium()).into(holder.picture);
+            Picasso.with(getContext()).load(result.getUser().getPicture().getThumbnail()).into(holder.picture);
             holder.name.setText(result.getUser().getName().getFirst() + " " + result.getUser().getName().getLast());
             holder.phone.setText(result.getUser().getPhone());
         }

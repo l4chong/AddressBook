@@ -85,4 +85,7 @@ public class User {
     public void setPicture(Picture picture) {
         this.picture = picture;
     }
+
+
+
 }

@@ -10,11 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lc.addressbook.Models.Location;
-import lc.addressbook.Models.Result;
-import lc.addressbook.Models.Results;
-import lc.addressbook.Models.User;
-import lc.addressbook.Models.Picture;
 import lc.addressbook.Models.Name;
+import lc.addressbook.Models.Picture;
+import lc.addressbook.Models.Result;
+import lc.addressbook.Models.User;
 
 /**
  * Created by QA on 14-12-08.
@@ -49,14 +48,14 @@ public class UserDataSource {
 
     }
 
-    public void populateDB(Results results) {
-         List<Result> mResults = results.getResults();
+    public void populateDB(List<Result> results) {
+         //List<Result> mResults = results.getResults();
         String sql = "INSERT INTO "+ UserDBOpenHelper.TABLE_USERS +" VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         SQLiteStatement statement = database.compileStatement(sql);
 
         database.beginTransaction();
         try {
-            for(Result result : mResults){
+            for(Result result : results){
                 statement.clearBindings();
 
                 statement.bindString(1, result.getUser().getUsername());
